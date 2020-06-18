@@ -1,36 +1,28 @@
-# import pandas as pd 
-
-# data = pd.read_csv("2000-2005_sample.csv", encoding = "ISO-8859-1") 
-
-# data.head()
-
-
-# import chardet
-
-# import pandas as pd
-
-# with open('2000-2005_sample.csv', 'rb', ) as f:
-#     result = chardet.detect(f.readline()) # or readline if the file is large
-#     df=pd.read_csv('2000-2005_sample.csv',encoding=result['encoding'])
-
-#     print(df.head())
-
-
-
-
-
 import csv
 import chardet
-
+import sys
 import codecs
 
 def stripWhite(item):
     return item.strip(' "\'\t\r\n').replace(",", "")
 
-with codecs.open('2000-2005_sample.csv', 'r', encoding='utf-8', errors='ignore') as csvfile:
-    with open('2000-2005_sample_clean.csv', "w", newline='') as csvWrite:  
+with codecs.open(sys.argv[1], 'r', encoding='utf-8', errors='ignore') as csvfile:
+    with open(sys.argv[2], "w", newline='') as csvWrite:  
         csvWriter = csv.writer(csvWrite, delimiter=',', quotechar='\'', quoting=csv.QUOTE_MINIMAL)
         reader = csv.DictReader(csvfile)
+        csvWriter.writerow(["Year","Quarter","Month","DayofMonth",
+        "DayOfWeek","FlightDate","UniqueCarrier","AirlineID","Carrier",
+        "TailNum","FlightNum","Origin","OriginCityName","OriginState",
+        "OriginStateFips","OriginStateName","OriginWac","Dest","DestCityName",
+        "DestState","DestStateFips","DestStateName","DestWac","CRSDepTime","DepTime",
+        "DepDelay","DepDelayMinutes","DepDel15","DepartureDelayGroups","DepTimeBlk",
+        "TaxiOut","WheelsOff","WheelsOn","TaxiIn","CRSArrTime","ArrTime","ArrDelay",
+        "ArrDelayMinutes","ArrDel15","ArrivalDelayGroups","ArrTimeBlk","Cancelled",
+        "CancellationCode","Diverted","CRSElapsedTime","ActualElapsedTime","AirTime",
+        "Flights","Distance","DistanceGroup","CarrierDelay","WeatherDelay","NASDelay",
+        "SecurityDelay","LateAircraftDelay",])
+
+
         for row in reader:
             # "Year","Quarter","Month","DayofMonth","DayOfWeek",
             csvWriter.writerow([
