@@ -1,0 +1,1 @@
+INSERT OVERWRITE TABLE ddb_cs598_question_1_1_local select Origin, count(Origin), count(Dest), count(Origin) + count(Dest) as total  from `cs598.cs598task1` GROUP BY Origin SORT BY total desc  limit 10;
