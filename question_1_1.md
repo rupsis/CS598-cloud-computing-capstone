@@ -23,6 +23,39 @@ TBLPROPERTIES(
 INSERT OVERWRITE TABLE ddb_cs598_question_1_1 select Origin, count(Origin), count(Dest), count(Origin) + count(Dest) as total  from `cs598.cs598task1` GROUP BY Origin SORT BY total desc  limit 10;
 
 select Origin, count(Origin), count(Dest), count(Origin) + count(Dest) as total  from `cs598task1-test.cs598task1_test` GROUP BY Origin SORT BY total desc  limit 10;
+
+
+select 
+a.Origin, 
+count(a.Origin) as origin_total, 
+count(b.Dest) as dest_total, 
+origin_total + dest_total as total
+from `cs598task1-test.cs598task1_test` as a JOIN `cs598task1-test.cs598task1_test` as b ON 
+(a.Origin = b.Dest) limit
+Group BY a.Origin, dest_total
+SORT BY total desc limit 10;
+
+
+select 
+a.Origin, 
+count(a.Origin) as origin_total, 
+count(b.Dest) as dest_total, 
+origin_total + dest_total as total
+from `cs598task1-test.cs598task1_test` as a JOIN `cs598task1-test.cs598task1_test` as b ON 
+(a.Origin = b.Dest) Group by a.Origin, b.Origin, dest_total limit 10;
+
+select Origin, count(*) as total from (select Origin, count(Origin) as origin_total from `cs598task1-test.cs598task1_test` group by Origin
+UNION 
+select Dest, count(Dest) as dest_total from `cs598task1-test.cs598task1_test`
+GROUP BY Dest) as t
+group By Origin Order by total desc limit 10;
+
+select Origin, count(*) as total from (select Origin, count(Origin) as origin_total from `cs598.cs598task1` group by Origin
+UNION 
+select Dest, count(Dest) as dest_total from `cs598task1-test.cs598task1_test`
+GROUP BY Dest) as t
+group By Origin Order by total desc limit 10;
+
 ```
 Results:
 ```
@@ -37,4 +70,3 @@ IAH     2652789 2652789 5305578
 MSP     2499691 2499691 4999382
 SFO     2457753 2457753 4915506
 ```
-
