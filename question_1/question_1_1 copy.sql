@@ -4,6 +4,13 @@ CREATE TABLE ddb_cs598_question_1_1_local
     dest_total_hive BIGINT,
     flight_total_hive BIGINT)
 
+    INSERT OVERWRITE TABLE ddb_cs598_question_1_1 select 
+    origin_hive,
+    origin_total_hive,
+    dest_total_hive,
+    flight_total_hive
+    from ddb_cs598_question_1_1_local;
+
 
 
 CREATE EXTERNAL TABLE ddb_cs598_question_1_1
