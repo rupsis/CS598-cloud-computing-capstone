@@ -21,9 +21,12 @@ INSERT OVERWRITE TABLE ddb_cs598_question_1_2 select Dest, sum(ArrDelay) as arri
 
 select Dest, sum(ArrDelay) as arrival_performance  from `cs598.cs598task1`  GROUP BY Dest having arrival_performance is not null SORT BY arrival_performance asc  limit 10;
 
+
+# for each airport code (CMI, BWI, MIA, LAX, IAH, SFO) run the folowing query
+
 select origin, carrier, SUM(depdelay) as departure_delay 
-from cs598task1_test where origin == 'CMI' group by origin, carrier having departure_delay is not null
-sort by departure_delay desc;
+from cs598.cs598task1 where origin == 'CMI' group by origin, carrier having departure_delay is not null
+sort by departure_delay desc limit 10;
 
 
 ```
