@@ -34,43 +34,93 @@ Year = 2008 and
 Month = 9 and 
 DayofMonth = 9 and 
 CRSDepTime < 1200
-sort by ArrDelay asc limit 3;
+sort by ArrDelay asc limit 10;
 
 select origin, dest, Carrier, FlightNum, ArrDelay, flightdate
 from cs598.cs598task1 where 
-origin = 'ORD' and
-Dest = 'LAX' and 
+origin = 'DFW' and
+Dest = 'CPR' and 
 Year = 2008 and
-Month = 3 and 
-DayofMonth = 6 and 
+Month = 9 and 
+DayofMonth = 11 and 
 CRSDepTime > 1200
 sort by ArrDelay asc limit 3;
+
+select *, (a.ArrDelay + b.ArrDelay) as total_delay  from 
+    (select origin, dest, Carrier, FlightNum, ArrDelay, CRSDepTime, flightdate
+    from cs598.cs598task1 where 
+    origin = 'SLC' and
+    Dest = 'BFL' and 
+    Year = 2008 and
+    Month = 4 and 
+    DayofMonth = 1 and 
+    CRSDepTime < 1200 and
+    ArrDelay is not null
+    sort by ArrDelay asc limit 1) as a 
+JOIN 
+    (select origin, dest, Carrier, FlightNum, ArrDelay, CRSDepTime, flightdate
+        from cs598.cs598task1 where 
+        origin = 'BFL' and
+        Dest = 'LAX' and 
+        Year = 2008 and
+        Month = 4 and 
+        DayofMonth = 3 and 
+        CRSDepTime > 1200 and
+        ArrDelay is not null
+        sort by ArrDelay asc) as b 
+ ON (a.dest = b.origin) order by total_delay asc limit 5;
+
+
+
+select *, (a.ArrDelay + b.ArrDelay) as total_delay  from 
+    (select origin, dest, Carrier, FlightNum, ArrDelay, CRSDepTime, flightdate
+    from cs598.cs598task1 where 
+    origin = 'DFW' and
+    Dest = 'ORD' and 
+    Year = 2008 and
+    Month = 6 and 
+    DayofMonth = 10 and 
+    CRSDepTime < 1200 and
+    ArrDelay is not null
+    sort by ArrDelay asc limit 1) as a 
+JOIN 
+    (select origin, dest, Carrier, FlightNum, ArrDelay, CRSDepTime, flightdate
+        from cs598.cs598task1 where 
+        origin = 'ORD' and
+        Dest = 'DFW' and 
+        Year = 2008 and
+        Month = 6 and 
+        DayofMonth = 12 and 
+        CRSDepTime > 1200 and
+        ArrDelay is not null
+        sort by ArrDelay asc limit 1) as b 
+ ON (a.dest = b.origin);
+
+
+
 
 
 ```
 Results:
 ```
 
-CMI -> ORD:
-CMI	ORD	MQ	4278	-14.0
-CMI	ORD	MQ	4401	-11.0
-CMI	ORD	MQ	4374	-1.0
-CMI	ORD	MQ	4373	11.0
+CMI → ORD → LAX, 04/03/2008:
 
-ORD -> LAX
-ORD	LAX	AA	607	-24.0
-ORD	LAX	UA	945	-23.0
-ORD	LAX	AA	1345	-21.0
-ORD	LAX	UA	943	-19.0
-ORD	LAX	AA	1407	-17.0
-ORD	LAX	AA	557	-12.0
-ORD	LAX	UA	127	-12.0
-ORD	LAX	UA	121	-4.0
-ORD	LAX	AA	455	1.0
-ORD	LAX	UA	129	2.0
+CMI	ORD	MQ	4278	-14.0	710	2008-03-04	ORD	LAX	AA	607	-24.0	1950	2008-03-06	-38.0
+
+JAX → DFW → CRP, 09/09/2008:
+JAX	DFW	AA	845	1.0	725	2008-09-09	DFW	CRP	MQ	3627	-7.0	1645	2008-09-11	-6.0
+
+SLC -> BFL -> LAX, 01/04/2008: 
+SLC	BFL	OO	3755	12.0	1100	2008-04-01	BFL	LAX	OO	5429	6.0	1455	2008-04-03	18.0
+
+LAX -> SFO -> PHX, 12/07/2008:
+LAX	SFO	WN	3534	-13.0	650	2008-07-12	SFO	PHX	US	408	-9.0	1715	2008-07-15	-22.0
+
+DFW -> ORD -> DFW, 10/06/2008:
 
 
-
+LAX -> ORD -> JFK, 1/1/2008:
 
 ```
 
