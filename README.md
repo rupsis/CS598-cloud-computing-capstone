@@ -16,7 +16,7 @@ cat 1988.csv | head -n 1 > 1988_1_sample.csv
 shuf -n 50000 On_Time_On_Time_Performance_1988_1.csv >> 1988_1_sample.csv
 
 # grabs all of the lines minus the first, and sticks it into a file
-awk -v ORS="" -F "\"*,\"*" 'NR>1  {print $10}' fike.csv
+awk -v ORS="" -F "\"*,\"*" 'NR>1  {print $10}' file.csv
 
 # checks a file to see if it contains all white space. If so, that column can be deleted
 grep -q '[^[:space:]]' < test.txt && printf '%s\n' "$file contains something else than whitespace characters"
