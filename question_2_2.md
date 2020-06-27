@@ -25,7 +25,7 @@ select Dest, sum(ArrDelay) as arrival_performance  from `cs598.cs598task1`  GROU
 # for each airport code (CMI, BWI, MIA, LAX, IAH, SFO) run the folowing query
 
 
-
+INSERT OVERWRITE TABLE ddb_cs598_question_1_2
 select origin, dest, avg(depdelay) as avg_depdelay 
 from cs598.cs598task1 where origin == 'SFO' group by origin, dest having avg_depdelay is not null
 sort by avg_depdelay asc limit 10;

@@ -5,14 +5,12 @@
 ```
 # Creating external DB in dynamoDB:
 
-CREATE EXTERNAL TABLE ddb_cs598_question_2_1
-    (origin STRING,
-    carrier STRING,
-    departure_performance
+CREATE EXTERNAL TABLE ddb_cs598_question_2_1_2
+    (airport_code STRING)
 STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler'
 TBLPROPERTIES(
-    "dynamodb.table.name" = "cs598_question_2_1",
-    "dynamodb.column.mapping"="dest:dest,arrival_performance:arrival_performance"
+    "dynamodb.table.name" = "q_2_1-2_ref",
+    "dynamodb.column.mapping"="airport_code:airport_code"
 );
 
 #insert into dynamodb
@@ -21,15 +19,13 @@ INSERT OVERWRITE TABLE ddb_cs598_question_1_2 select Dest, sum(ArrDelay) as arri
 
 select Dest, sum(ArrDelay) as arrival_performance  from `cs598.cs598task1`  GROUP BY Dest having arrival_performance is not null SORT BY arrival_performance asc  limit 10;
 
-
-# for each airport code (CMI, BWI, MIA, LAX, IAH, SFO) run the folowing query
-
-
-
-select origin, carrier, avg(depdelay) as avg_depdelay 
-from cs598.cs598task1 where origin == 'SFO' group by origin, carrier having avg_depdelay is not null
+INSERT OVERWRITE TABLE ddb_cs598_question_2_1  select origin, carrier, avg(depdelay) as avg_depdelay from cs598.cs598task1 where origin IN (select * from ddb_cs598_question_2_1_2 limit 1) group by origin, carrier having avg_depdelay is not null
 sort by avg_depdelay asc limit 10;
 
+select origin, carrier, avg(depdelay) as avg_depdelay
+from cs598.cs598task1 where origin IN (select * from ddb_cs598_question_2_1_2 limit 1) group by  
+origin, carrier having avg_depdelay is not null
+sort by avg_depdelay asc limit 10;
 
 ```
 Results:
