@@ -76,21 +76,21 @@ select *, (a.ArrDelay + b.ArrDelay) as total_delay  from
     (select origin, dest, Carrier, FlightNum, ArrDelay, CRSDepTime, flightdate
     from cs598.cs598task1 where 
     origin = 'LAX' and
-    Dest = 'ORD' and 
+    Dest = 'SFO' and 
     Year = 2008 and
-    Month = 1 and 
-    DayofMonth = 1 and 
+    Month = 7 and 
+    DayofMonth = 12 and 
     CRSDepTime < 1200 and
     ArrDelay is not null
     sort by ArrDelay asc limit 1) as a 
 JOIN 
     (select origin, dest, Carrier, FlightNum, ArrDelay, CRSDepTime, flightdate
         from cs598.cs598task1 where 
-        origin = 'ORD' and
-        Dest = 'JFK' and 
+        origin = 'SFO' and
+        Dest = 'PHX' and 
         Year = 2008 and
-        Month = 1 and 
-        DayofMonth = 3 and 
+        Month = 7 and 
+        DayofMonth = 14 and 
         CRSDepTime > 1200 and
         ArrDelay is not null
         sort by ArrDelay asc limit 1) as b 
@@ -115,7 +115,7 @@ SLC -> BFL -> LAX, 01/04/2008:
 SLC	BFL	OO	3755	12.0	1100	2008-04-01	BFL	LAX	OO	5429	6.0	1455	2008-04-03	18.0
 
 LAX -> SFO -> PHX, 12/07/2008:
-LAX	SFO	WN	3534	-13.0	650	2008-07-12	SFO	PHX	US	408	-9.0	1715	2008-07-15	-22.0
+
 
 DFW -> ORD -> DFW, 10/06/2008:
 DFW	ORD	UA	1104	-21.0	700	2008-06-10	ORD	DFW	AA	2341	-10.0	1645	2008-06-12	-31.

@@ -22,32 +22,27 @@ INSERT OVERWRITE TABLE ddb_cs598_question_1_2 select Dest, sum(ArrDelay) as arri
 
 select Dest, avg(ArrDelay) as arrival_performance  from `cs598.cs598task1`  GROUP BY Dest having arrival_performance is not null SORT BY arrival_performance asc  limit 10;
 
-select Carrier, avg(ArrDelay) as arrival_performance  from `cs598.cs598task1`  GROUP BY Carrier having arrival_performance is not null SORT BY arrival_performance asc  limit 10;
+select DayOfWeek, avg(ArrDelay) as arrival_performance  from `cs598.cs598task1`  GROUP BY DayOfWeek having arrival_performance is not null SORT BY arrival_performance asc  limit 10;
 
 
 ```
 Results:
 ```
-# based on sum(ArrDelay)
-HA	-1.01180434574519
-AQ	1.1569234424812056
-PA	4.265420017873101
-ML	4.747609195734892
-NW	5.45229911101284
-F9	5.465881148819851
-WN	5.602039015611727
-OO	5.736312463662878
-9E	5.8671846616957595
-EA	6.060172358025279
+6	4.313248565091031
+2	5.956452361818581
+7	6.702123949857592
+1	6.712999486963483
+3	7.195133394418562
+4	9.137028699756533
+5	9.81604680982988
+
+
 ```
 
-HA: -1.01
-AQ: 1.16
-PS: 1.45
-ML (1): 4.75
-PA (1): 5.32
-F9: 5.47
-NW: 5.56
-WN: 5.56
-OO: 5.74
-9E: 5.87
+Saturday: 4.30
+Tuesday: 5.99
+Sunday: 6.61
+Monday: 6.72
+Wednesday: 7.20
+Thursday: 9.09
+Friday: 9.72
