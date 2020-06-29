@@ -70,3 +70,5 @@ TBLPROPERTIES(
     "dynamodb.table.name" = "Features",
     "dynamodb.column.mapping"="feature_id:Id,feature_name:Name,feature_class:Class,state_alpha:State,prim_lat_dec:Latitude,prim_long_dec:Longitude,elev_in_ft:Elevation"
 );
+
+DESCRIBE FORMATTED cs598_question_1_1_local;
