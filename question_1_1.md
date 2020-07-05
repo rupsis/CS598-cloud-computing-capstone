@@ -77,3 +77,9 @@ IAH	IAH	5309030
 MSP	MSP	5006742
 SFO	SFO	4909367
 ```
+
+{
+  "id": "LAX",
+  "dest": "LAX",
+  "flight_total": 7384201
+}

@@ -40,6 +40,7 @@ sort by avg_arrdelay asc limit 10;
 ```
 Results:
 ```
+
 origin, Dest, Carrier, Average Arrival Delay
 
 CMI	ORD	MQ	10.14366290643663

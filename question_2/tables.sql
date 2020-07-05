@@ -1,11 +1,6 @@
 --  Question 2.1
 
-CREATE TABLE cs598_question_2_1_local
-    (origin STRING,
-    carrier STRING,
-    avg_depdelay BIGINT);
-
-CREATE EXTERNAL TABLE ddb_cs598_question_2_1
+CREATE EXTERNAL TABLE ddb_cs598_question_2_1_batch
     (origin STRING,
     carrier STRING,
     avg_depdelay BIGINT)
@@ -53,15 +48,14 @@ TBLPROPERTIES(
 );
 
 --  Question 2.4
-CREATE TABLE cs598_question_1_3_local
-    (day_of_the_week STRING,
-    arrival_performance BIGINT);
 
-CREATE EXTERNAL TABLE ddb_cs598_question_1_3
-    (day_of_the_week STRING,
-    arrival_performance BIGINT)
+
+CREATE EXTERNAL TABLE cs598_question_2_4_batch
+    (origin STRING,
+    dest STRING,
+    mean_arrdelay BIGINT)
 STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler'
 TBLPROPERTIES(
-    "dynamodb.table.name" = "cs598_question_1_3",
+    "dynamodb.table.name" = "cs598_question_2_4",
     "dynamodb.column.mapping"="day_of_the_week:days_of_the_week,arrival_performance:arrival_performance"
 );

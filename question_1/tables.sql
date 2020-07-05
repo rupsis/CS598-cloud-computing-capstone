@@ -32,7 +32,7 @@ CREATE TABLE cs598_question_1_2_local
     LINES TERMINATED BY '\n';
     
 
-CREATE EXTERNAL TABLE ddb_cs598_question_1_2
+CREATE EXTERNAL TABLE ddb_cs598_question_1_2_01
     (dest STRING,
     arrival_performance BIGINT)
 STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler'
@@ -47,7 +47,7 @@ CREATE TABLE cs598_question_1_3_local
     (day_of_the_week STRING,
     arrival_performance BIGINT);
 
-CREATE EXTERNAL TABLE ddb_cs598_question_1_3
+CREATE EXTERNAL TABLE ddb_cs598_question_1_3_01
     (day_of_the_week STRING,
     arrival_performance BIGINT)
 STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler'
