@@ -1,0 +1,122 @@
+# Group 2
+
+
+## Question 1
+```
+# Creating external DB in dynamoDB:
+
+CREATE EXTERNAL TABLE ddb_cs598_question_2_1
+    (origin STRING,
+    carrier STRING,
+    departure_performance
+STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler'
+TBLPROPERTIES(
+    "dynamodb.table.name" = "cs598_question_2_1",
+    "dynamodb.column.mapping"="dest:dest,arrival_performance:arrival_performance"
+);
+
+#insert into dynamodb
+
+INSERT OVERWRITE TABLE ddb_cs598_question_1_2 select Dest, sum(ArrDelay) as arrival-performance  from `cs598.cs598task1` having arrival_performance is not null  GROUP BY Dest SORT BY arrival-performance asc  limit 10;
+
+select Dest, sum(ArrDelay) as arrival_performance  from `cs598.cs598task1`  GROUP BY Dest having arrival_performance is not null SORT BY arrival_performance asc  limit 10;
+
+
+# for each airport code (CMI, BWI, MIA, LAX, IAH, SFO) run the folowing query
+
+
+INSERT OVERWRITE TABLE ddb_cs598_question_1_2
+select origin, dest, avg(depdelay) as avg_depdelay 
+from cs598.cs598task1 where origin == 'SFO' group by origin, dest having avg_depdelay is not null
+sort by avg_depdelay asc limit 10;
+
+
+```
+Results:
+```
+
+CMI	ABI	-7.0
+CMI	PIT	1.1024305555555556
+CMI	PIA	1.4523809523809523
+CMI	CVG	1.8947616800377536
+CMI	DAY	2.89157004073958
+CMI	STL	5.039735099337748
+CMI	DFW	5.944142746314973
+CMI	ATL	6.665137614678899
+CMI	ORD	8.194098143236074
+
+
+BWI	SAV	-7.0
+BWI	MLB	1.155367231638418
+BWI	DAB	1.4695945945945945
+BWI	SRQ	1.5884838880084522
+BWI	IAD	2.262295081967213
+BWI	UCA	3.6748726655348047
+BWI	GSP	4.197686645636172
+BWI	BGM	4.3842260649514975
+BWI	SJU	4.409805634417995
+BWI	OAJ	4.453125
+
+MIA	SHV	0.0
+MIA	BUF	1.0
+MIA	SAN	1.710382513661202
+MIA	SLC	2.5371900826446283
+MIA	HOU	2.8840482573726542
+MIA	ISP	3.647398843930636
+MIA	MEM	3.7935208981468955
+MIA	PSE	3.975845410628019
+MIA	TLH	4.389016018306636
+MIA	MCI	5.5
+
+LAX	SDF	-16.0
+LAX	IDA	-7.0
+LAX	DRO	-6.0
+LAX	RSW	-3.0
+LAX	LAX	-2.0
+LAX	BZN	-0.7272727272727273
+LAX	MAF	0.0
+LAX	PIH	0.0
+LAX	IYK	1.2698247440569148
+LAX	MFE	1.3764705882352941
+
+IAH	MSN	-2.0
+IAH	AGS	-0.6187904967602592
+IAH	MLI	-0.5
+IAH	EFD	1.8877082136703045
+IAH	JAC	2.570588235294118
+IAH	HOU	2.631741821396994
+IAH	MTJ	2.9501569858712715
+IAH	RNO	3.22158438576349
+IAH	BPT	3.5995325282430852
+IAH	VCT	3.6119087837837838
+
+SFO	SDF	-10.0
+SFO	MSO	-4.0
+SFO	PIH	-3.0
+SFO	OAK	-2.6271820448877805
+SFO	LGA	-1.7575757575757576
+SFO	PIE	-1.3410404624277457
+SFO	FAR	0.0
+SFO	BNA	2.425966447848286
+SFO	MEM	3.165533496509836
+SFO	SJC	4.089209855564996
+
+```
+
+Sample solution:
+```
+CMI
+
+(ABI, -7.0)
+(PIT, 1.10)
+(CVG, 1.89)
+(DAY, 3.12)
+(STL, 3.98)
+(PIA, 4.59)
+(DFW, 5.94)
+(ATL, 6.67)
+(ORD, 8.19)
+
+
+
+```
