@@ -18,10 +18,10 @@ bin/kafka-topics.sh --create --zookeeper b-1.cs598-tast2.n69c9p.c2.kafka.us-east
 
 
 # Producer
-bin/kafka-console-producer.sh --broker-list b-1.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092,b-2.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092 --topic AWSKafkaTutorialTopic
+bin/kafka-console-producer.sh --broker-list b-1.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092,b-2.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092 --topic test
 
 #consumer
-bin/kafka-console-consumer.sh --bootstrap-server b-1.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092,b-2.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092 --topic AWSKafkaTutorialTopic --from-beginning
+bin/kafka-console-consumer.sh --bootstrap-server b-1.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092,b-2.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092 --topic cs598-task2 --from-beginning
 
 
 # allocate more memory to kafka:
