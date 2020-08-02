@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-# bin/spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.2.1  --executor-memory 20G --master yarn --num-executors 50  ~/task2/question-2_1.py 
+# spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.2.1  --executor-memory 20G --master yarn --num-executors 50  ~/task2/question-2_3.py 
 
 import sys
 import uuid
@@ -15,11 +15,12 @@ from pyspark.streaming.kafka import KafkaUtils
 def save_results(items):
     dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
 
-    table = dynamodb.Table('cs598_question_2_1')
+    table = dynamodb.Table('cs598_question_2_3')
     for item in items:
         origin = item['origin']
         carrier = item['carrier']
-        avg_depdelay = item['avg_depdelay'] 
+        avg_depdelay = item['avg_depdelay']
+        dest = item['dest']
         table.put_item(Item=item)
 
 def saveTopCarriers(carriers):
@@ -39,12 +40,13 @@ def calculateAverage(newVal, accumlativeAvg):
 
 if __name__ == '__main__':
     conf = SparkConf()
-    conf.setAppName("Problem_2-1")
+    conf.setAppName("Problem_2-3")
     conf.set("spark.streaming.kafka.maxRatePerPartition", 50000)
     conf.set("spark.executor.memory", "2g")
     conf.set("spark.python.worker.memory", "1g")
 
-    airports = ['CMI', 'BWI', 'MIA', 'LAX', 'IAH', 'SFO']
+    # Source / Dest pairs
+    routes = [('CMI', 'ORD'), ('IND', 'CMH'), ('DFW', 'IAH'), ('LAX', 'SFO'), ('JFK', 'LAX'), ('ATL', 'PHX')]
 
     sc = SparkContext(conf=conf)
     sc.setLogLevel("WARN")
@@ -52,7 +54,7 @@ if __name__ == '__main__':
     ssc.checkpoint("/tmp/streaming")
 
     brokers = "b-1.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092,b-2.cs598-tast2.n69c9p.c2.kafka.us-east-1.amazonaws.com:9092"
-    topic = "cs598-task2 "
+    topic = "cs598-task2"
     kafka_consumer_group = str(uuid.uuid4())
     kafka_client_params = {
         "metadata.broker.list": brokers,
@@ -63,15 +65,15 @@ if __name__ == '__main__':
     events = KafkaUtils.createDirectStream(ssc, [topic], kafka_client_params)
     parsed = events.map(lambda line: json.loads(line[1]))
 
-    # Filter based on airport list
-    filtered_airports = parsed.filter(lambda item: item['Dest'] in airports)
+    # Filter based on airport to / from
+    filtered_airports = parsed.filter(lambda item: (item['origin'], item['Dest']) in routes)
 
     # compute averages 
     filtered_airports = filtered_airports.updateStateByKey(calculateAverage)
 
     # for each airport, save to ten items
-    for airport in airports:
-        saveTopCarriers(filtered_airports.filter(lambda item: item['Dest'] == airport))
+    for route in routes:
+        saveTopCarriers(filtered_airports.filter(lambda item: (item['origin'], item['Dest']) == route))
 
     print("Completed")
 

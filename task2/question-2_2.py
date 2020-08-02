@@ -15,10 +15,10 @@ from pyspark.streaming.kafka import KafkaUtils
 def save_results(items):
     dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
 
-    table = dynamodb.Table('cs598_question_2_1')
+    table = dynamodb.Table('cs598_question_2_2')
     for item in items:
         origin = item['origin']
-        carrier = item['carrier']
+        dest = item['dest']
         avg_depdelay = item['avg_depdelay'] 
         table.put_item(Item=item)
 
@@ -39,7 +39,7 @@ def calculateAverage(newVal, accumlativeAvg):
 
 if __name__ == '__main__':
     conf = SparkConf()
-    conf.setAppName("Problem_2-1")
+    conf.setAppName("Problem_2-2")
     conf.set("spark.streaming.kafka.maxRatePerPartition", 50000)
     conf.set("spark.executor.memory", "2g")
     conf.set("spark.python.worker.memory", "1g")
